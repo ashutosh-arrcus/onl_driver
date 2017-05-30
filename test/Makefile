@@ -3,7 +3,7 @@ RM = rm -f
 LDFLAGS = -L../lib/ -lplatform_driver -Wl,-rpath,/root/
 CFLAGS = -O0 -g -I../include/ -I.
 
-TARGET_BIN = fan sys psu thermal
+TARGET_BIN = fan sys psu thermal led
     
 #SRCS = test1.c
 #OBJS = $(SRCS:.c=.o)
@@ -37,6 +37,12 @@ thermal: thermal.o
 
 thermal.o: thermal.c
 	$(CC) $(CFLAGS) -c -o thermal.o thermal.c
+
+led: led.o
+	$(CC) -o led led.o $(LDFLAGS)
+
+led.o: led.c
+	$(CC) $(CFLAGS) -c -o led.o led.c
 
 .PHONY: clean
 clean:

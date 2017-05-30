@@ -17,6 +17,9 @@ int (*platformi_psu_info_get)(onlp_oid_t, onlp_psu_info_t*);
 /* THERMAL */
 int (*platformi_thermal_info_get)(onlp_oid_t, onlp_thermal_info_t*);
 
+/* LED */
+int (*platformi_led_info_get)(onlp_oid_t, onlp_led_info_t*);
+
 #define LIB_NAME "/lib/x86_64-linux-gnu/libonlp.so"
 
 static int
@@ -54,6 +57,12 @@ platform_symbol_load() {
         platformi_thermal_info_get = dlsym(lib_hdl, "onlp_thermal_info_get");
         if (NULL != dlerror()) {
                 printf("Error: onlp_thermal_info_get() %s\n", dlerror());
+                return -1;
+        }
+
+        platformi_led_info_get = dlsym(lib_hdl, "onlp_led_info_get");
+        if (NULL != dlerror()) {
+                printf("Error: onlp_led_info_get() %s\n", dlerror());
                 return -1;
         }
         return 0;
