@@ -7,7 +7,7 @@ CFLAGS = -O0 -g -fPIC -I../include/
 
 TARGET_LIB = ../lib/libplatform_driver.so
     
-SRCS = platform_driver.c
+SRCS = platform_driver.c platform_fan.c platform_sys.c platform_psu.c
 OBJS = $(SRCS:.c=.o)
 
 .PHONY: all

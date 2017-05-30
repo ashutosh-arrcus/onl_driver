@@ -39,12 +39,20 @@ int main(int argc, char *argv[]) {
                 platform_fan_info_init(&fan_info);
                 ret_val = platform_fan_info_get(fan_oid_list[idx], &fan_info);
                 if (ret_val < 0) {
-                        printf("Error platform_fan_info_get()\n");
+                        printf("Fan OID: %u\n", fan_oid_list[idx]);
+                        printf("Fan Present: %d\n", FAN_NOT_PRESENT);
+                        printf("\n\n");
                         continue;
                 }
-                printf("Fan OID: %u RPM: %d Model: %s SerialNum: %s\n",
-                        fan_oid_list[idx], fan_info.rpm, fan_info.model,
-                        fan_info.serial_num);
+                printf("Fan OID: %u\n", fan_oid_list[idx]);
+                printf("RPM: %d\n", fan_info.rpm);
+                printf("Fan Description: %s\n", fan_info.desc);
+                printf("Fan Present: %d\n", fan_info.present);
+                printf("Percentage: %d\n", fan_info.percentage);
+                printf("Direction: %d\n", fan_info.direction);
+                printf("Model: %s\n", fan_info.model);
+                printf("Serial Num: %s\n", fan_info.serial_num);
+                printf("\n\n");
         }
         free(fan_oid_list);
         fan_oid_list = NULL;
