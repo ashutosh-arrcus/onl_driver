@@ -8,10 +8,12 @@
 #include <onlp/sys.h>
 #include <onlp/fan.h>
 #include <onlp/psu.h>
+#include <onlp/thermal.h>
 
 #define INFO_STR_MAX 64
 #define INVALID_OID (-1)
 #define MAC_ADDR_LEN (6)
+#define INVALID_TEMP (-1)
 
 typedef enum fan_direction_e {
         INVALID_DIR = 0,
@@ -71,6 +73,20 @@ typedef struct plaform_sys_info_s {
         char onie_version[INFO_STR_MAX];
 } platform_sys_info_t;
 
+typedef enum thermal_status_e {
+        THERMAL_PRESENT = 1,
+        THERMAL_FAILED = 2
+} thermal_status_t;
+
+typedef struct platform_thermal_info_s {
+        char desc[INFO_STR_MAX];
+        thermal_status_t status;
+        int temperature;
+        int warn_threshold; //milli celsius
+        int err_threshold; //milli celsius
+        int shutdown_threshold; //milli celsius
+} platform_thermal_info_t;
+
 int platform_driver_init(void);
 void platform_driver_dinit(void);
 void platform_oid_list_init(uint32_t *id_list, int size);
@@ -84,4 +100,8 @@ int platform_get_num_psus(void);
 int platform_get_psu_oid_list(uint32_t *id_list, int arr_max, int *arr_cnt);
 void platform_psu_info_init(platform_psu_info_t *info);
 int platform_psu_info_get(uint32_t id, platform_psu_info_t *info);
+int platform_get_num_thermals(void);
+int platform_get_thermal_oid_list(uint32_t *id_list, int arr_max, int *arr_cnt);
+void platform_thermal_info_init(platform_thermal_info_t *info);
+int platform_thermal_info_get(uint32_t id, platform_thermal_info_t *info);
 #endif /* PLATFORM_DRIVER_H */
