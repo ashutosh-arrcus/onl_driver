@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
                 printf("PSU OID: %u\n", psu_oid_list[idx]);
                 ret_val = platform_psu_info_get(psu_oid_list[idx], &psu_info);
                 if (ret_val < 0) {
-                        printf("PSU Present: %d\n", PSU_NOT_PRESENT);
+                        printf("PSU Present: %d\n", PSU_STATUS_ABSENT);
                         printf("\n\n");
                         continue;
                 }

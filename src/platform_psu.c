@@ -44,14 +44,16 @@ int platform_get_psu_oid_list(uint32_t *id_list, int arr_max, int *arr_cnt) {
 }
 
 void platform_psu_info_init(platform_psu_info_t *info) {
-        memset(info, 0, sizeof(platform_psu_info_t));
+        memset(info->desc, 0, INFO_STR_MAX * sizeof(char));
         info->milli_volt_in = 0;
         info->milli_volt_out = 0;
         info->milli_amp_in = 0;
         info->milli_amp_out = 0;
         info->milli_watt_in = 0;
         info->milli_watt_out = 0;
-        info->status = 0;
+        info->status = PSU_STATUS_ABSENT;
+        memset(info->model, 0, INFO_STR_MAX * sizeof(char));
+        memset(info->serial_num, 0, INFO_STR_MAX * sizeof(char));
 }
 
 int platform_psu_info_get(uint32_t id, platform_psu_info_t *info) {
@@ -75,19 +77,19 @@ int platform_psu_info_get(uint32_t id, platform_psu_info_t *info) {
         }
 
         strncpy(info->desc, psu_info.hdr.description, INFO_STR_MAX);
-        info->milli_volt_in = psu_info.mvin;
-        info->milli_volt_out = psu_info.mvout;
-        info->milli_amp_in = psu_info.miin;
-        info->milli_amp_out = psu_info.miout;
-        info->milli_watt_in = psu_info.mpin;
-        info->milli_watt_out = psu_info.mpout;
         if (psu_info.status & ONLP_PSU_STATUS_PRESENT) {
-                info->status = PSU_PRESENT;
+                info->status = PSU_STATUS_PRESENT;
+                info->milli_volt_in = psu_info.mvin;
+                info->milli_volt_out = psu_info.mvout;
+                info->milli_amp_in = psu_info.miin;
+                info->milli_amp_out = psu_info.miout;
+                info->milli_watt_in = psu_info.mpin;
+                info->milli_watt_out = psu_info.mpout;
+                strncpy(info->model, psu_info.model, INFO_STR_MAX);
+                strncpy(info->serial_num, psu_info.serial, INFO_STR_MAX);
         } else {
-                info->status = PSU_NOT_PRESENT;
+                info->status = PSU_STATUS_ABSENT;
         }
 
-        strncpy(info->model, psu_info.model, INFO_STR_MAX);
-        strncpy(info->serial_num, psu_info.serial, INFO_STR_MAX);
         return 0;
 }

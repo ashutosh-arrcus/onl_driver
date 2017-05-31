@@ -44,7 +44,13 @@ int platform_get_fan_oid_list(uint32_t *id_list, int arr_max, int *arr_cnt) {
 }
 
 void platform_fan_info_init(platform_fan_info_t *info) {
-        memset(info, 0, sizeof(platform_fan_info_t));
+        memset(info->desc, 0, INFO_STR_MAX * sizeof(char));
+        info->status = FAN_STATUS_ABSENT;
+        info->rpm = 0;
+        info->percentage = 0;
+        info->dir = FAN_DIR_UNKNOWN;
+        memset(info->model, 0, INFO_STR_MAX * sizeof(char));
+        memset(info->serial_num, 0, INFO_STR_MAX * sizeof(char));
 }
 
 int platform_fan_info_get(uint32_t id, platform_fan_info_t *info) {
@@ -68,22 +74,21 @@ int platform_fan_info_get(uint32_t id, platform_fan_info_t *info) {
         }
 
         strncpy(info->desc, fan_info.hdr.description, INFO_STR_MAX);
-        info->rpm = fan_info.rpm;
         if (fan_info.status & ONLP_FAN_STATUS_PRESENT) {
-                info->present = FAN_PRESENT;
+                info->status = FAN_STATUS_PRESENT;
+                info->rpm = fan_info.rpm;
+                info->percentage = fan_info.percentage;
                 if (fan_info.status & ONLP_FAN_STATUS_B2F) {
-                        info->direction = BACK_TO_FRONT;
+                        info->dir = FAN_DIR_B2F;
+                } else if (fan_info.status & ONLP_FAN_STATUS_F2B) {
+                        info->dir = FAN_DIR_F2B;
                 } else {
-                        info->direction = FRONT_TO_BACK;
+                        info->dir = FAN_DIR_UNKNOWN;
                 }
+                strncpy(info->model, fan_info.model, INFO_STR_MAX);
+                strncpy(info->serial_num, fan_info.serial, INFO_STR_MAX);
         } else {
-                info->present = FAN_NOT_PRESENT;
-                info->direction = INVALID_DIR;
+                info->status = FAN_STATUS_ABSENT;
         }
-
-        info->percentage = fan_info.percentage;
-
-        strncpy(info->model, fan_info.model, INFO_STR_MAX);
-        strncpy(info->serial_num, fan_info.serial, INFO_STR_MAX);
         return 0;
 }

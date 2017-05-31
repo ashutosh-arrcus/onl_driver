@@ -40,16 +40,16 @@ int main(int argc, char *argv[]) {
                 ret_val = platform_fan_info_get(fan_oid_list[idx], &fan_info);
                 if (ret_val < 0) {
                         printf("Fan OID: %u\n", fan_oid_list[idx]);
-                        printf("Fan Present: %d\n", FAN_NOT_PRESENT);
+                        printf("Unable to fetch fan_info\n");
                         printf("\n\n");
                         continue;
                 }
                 printf("Fan OID: %u\n", fan_oid_list[idx]);
-                printf("RPM: %d\n", fan_info.rpm);
                 printf("Fan Description: %s\n", fan_info.desc);
-                printf("Fan Present: %d\n", fan_info.present);
+                printf("Fan Status: %d\n", fan_info.status);
+                printf("RPM: %d\n", fan_info.rpm);
                 printf("Percentage: %d\n", fan_info.percentage);
-                printf("Direction: %d\n", fan_info.direction);
+                printf("Dir: %d\n", fan_info.dir);
                 printf("Model: %s\n", fan_info.model);
                 printf("Serial Num: %s\n", fan_info.serial_num);
                 printf("\n\n");
