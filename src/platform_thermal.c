@@ -45,10 +45,10 @@ int platform_get_thermal_oid_list(uint32_t *id_list, int arr_max, int *arr_cnt) 
 
 void platform_thermal_info_init(platform_thermal_info_t *info) {
         memset(info, 0, sizeof(platform_thermal_info_t));
-        info->temperature = INVALID_TEMP;
-        info->warn_threshold = INVALID_TEMP;
-        info->err_threshold = INVALID_TEMP;
-        info->shutdown_threshold = INVALID_TEMP;
+        info->temperature = 0;
+        info->warn_threshold = 0;
+        info->err_threshold = 0;
+        info->shutdown_threshold = 0;
 }
 
 int platform_thermal_info_get(uint32_t id, platform_thermal_info_t *info) {
@@ -73,21 +73,21 @@ int platform_thermal_info_get(uint32_t id, platform_thermal_info_t *info) {
 
         strncpy(info->desc, thermal_info.hdr.description, INFO_STR_MAX);
         if (thermal_info.status & ONLP_THERMAL_STATUS_PRESENT) {
-                info->status = THERMAL_PRESENT;
+                info->status = THERMAL_STATUS_PRESENT;
                 if (thermal_info.caps & ONLP_THERMAL_CAPS_GET_TEMPERATURE) {
-                        info->temperature = thermal_info.mcelsius;
+                        info->temperature = (float)thermal_info.mcelsius;
                 }
                 if (thermal_info.caps & ONLP_THERMAL_CAPS_GET_WARNING_THRESHOLD) {
-                        info->warn_threshold = thermal_info.thresholds.warning;
+                        info->warn_threshold = (float)(thermal_info.thresholds.warning)/1000.0;
                 }
                 if (thermal_info.caps & ONLP_THERMAL_CAPS_GET_ERROR_THRESHOLD) {
-                        info->err_threshold = thermal_info.thresholds.error;
+                        info->err_threshold = (float)(thermal_info.thresholds.error)/1000.0;
                 }
                 if (thermal_info.caps & ONLP_THERMAL_CAPS_GET_SHUTDOWN_THRESHOLD) {
-                        info->shutdown_threshold = thermal_info.thresholds.shutdown;
+                        info->shutdown_threshold = (float)(thermal_info.thresholds.shutdown)/1000.0;
                 }
         } else {
-                info->status = THERMAL_FAILED;
+                info->status = THERMAL_STATUS_ABSENT;
         }
 
         return 0;

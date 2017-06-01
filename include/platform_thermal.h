@@ -5,17 +5,18 @@
 #include <platform_common.h>
 
 typedef enum thermal_status_e {
-        THERMAL_PRESENT = 1,
-        THERMAL_FAILED = 2
+        THERMAL_STATUS_PRESENT,
+        THERMAL_STATUS_ABSENT,
+        THERMAL_STATUS_MAX
 } thermal_status_t;
 
 typedef struct platform_thermal_info_s {
         char desc[INFO_STR_MAX];
         thermal_status_t status;
-        int temperature;
-        int warn_threshold; //milli celsius
-        int err_threshold; //milli celsius
-        int shutdown_threshold; //milli celsius
+        float temperature;
+        float warn_threshold;
+        float err_threshold;
+        float shutdown_threshold;
 } platform_thermal_info_t;
 
 int platform_get_num_thermals(void);

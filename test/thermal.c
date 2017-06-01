@@ -40,16 +40,16 @@ int main(int argc, char *argv[]) {
                 printf("Thermal OID: %u\n", thermal_oid_list[idx]);
                 ret_val = platform_thermal_info_get(thermal_oid_list[idx], &thermal_info);
                 if (ret_val < 0) {
-                        printf("Thermal Present: %d\n", THERMAL_FAILED);
+                        printf("Thermal Present: %d\n", THERMAL_STATUS_ABSENT);
                         printf("\n\n");
                         continue;
                 }
                 printf("Thermal Description: %s\n", thermal_info.desc);
                 printf("Thermal Present: %d\n", thermal_info.status);
-                printf("Temperature: %d\n", thermal_info.temperature);
-                printf("Warning Threshold: %d\n", thermal_info.warn_threshold);
-                printf("Error Threshold: %d\n", thermal_info.err_threshold);
-                printf("Shutdown Threshold: %d\n", thermal_info.shutdown_threshold);
+                printf("Temperature: %f\n", thermal_info.temperature);
+                printf("Warning Threshold: %f\n", thermal_info.warn_threshold);
+                printf("Error Threshold: %f\n", thermal_info.err_threshold);
+                printf("Shutdown Threshold: %f\n", thermal_info.shutdown_threshold);
                 printf("\n\n");
         }
         free(thermal_oid_list);

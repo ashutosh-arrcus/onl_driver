@@ -44,11 +44,10 @@ int platform_get_led_oid_list(uint32_t *id_list, int arr_max, int *arr_cnt) {
 }
 
 void platform_led_info_init(platform_led_info_t *info) {
-        memset(info, 0, sizeof(platform_led_info_t));
-        info->status = 0;
-        info->mode = 0;
-        info->caps = 0;
-        info->character = 0;
+        memset(info->desc, 0, INFO_STR_MAX * sizeof(char));
+        info->status = LED_STATUS_ABSENT;
+        info->state = LED_STATE_OFF;
+        info->mode = LED_MODE_OFF;
 }
 
 int platform_led_info_get(uint32_t id, platform_led_info_t *info) {
@@ -72,10 +71,69 @@ int platform_led_info_get(uint32_t id, platform_led_info_t *info) {
         }
 
         strncpy(info->desc, led_info.hdr.description, INFO_STR_MAX);
-        info->status = led_info.status;
-        info->mode = led_info.mode;
-        info->caps = led_info.caps;
-        info->character = led_info.character;
+        if (led_info.status & ONLP_LED_STATUS_PRESENT) {
+                info->status = LED_STATUS_PRESENT;
+                if (led_info.status == ONLP_LED_STATUS_ON) {
+                        info->state = LED_STATE_ON;
+                } else {
+                        info->state = LED_STATE_OFF;
+                }
+                switch(led_info.mode) {
+                        case ONLP_LED_MODE_OFF:
+                                info->mode = LED_MODE_OFF;
+                                break;
+                        case ONLP_LED_MODE_ON:
+                                info->mode = LED_MODE_ON;
+                                break;
+                        case ONLP_LED_MODE_BLINKING:
+                                info->mode = LED_MODE_BLINKING;
+                                break;
+                        case ONLP_LED_MODE_RED:
+                                info->mode = LED_MODE_RED;
+                                break;
+                        case ONLP_LED_MODE_RED_BLINKING:
+                                info->mode = LED_MODE_RED_BLINKING;
+                                break;
+                        case ONLP_LED_MODE_ORANGE:
+                                info->mode = LED_MODE_ORANGE;
+                                break;
+                        case ONLP_LED_MODE_ORANGE_BLINKING:
+                                info->mode = LED_MODE_ORANGE_BLINKING;
+                                break;
+                        case ONLP_LED_MODE_YELLOW:
+                                info->mode = LED_MODE_YELLOW;
+                                break;
+                        case ONLP_LED_MODE_YELLOW_BLINKING:
+                                info->mode = LED_MODE_YELLOW_BLINKING;
+                                break;
+                        case ONLP_LED_MODE_GREEN:
+                                info->mode = LED_MODE_GREEN;
+                                break;
+                        case ONLP_LED_MODE_GREEN_BLINKING:
+                                info->mode = LED_MODE_GREEN_BLINKING;
+                                break;
+                        case ONLP_LED_MODE_BLUE:
+                                info->mode = LED_MODE_BLUE;
+                                break;
+                        case ONLP_LED_MODE_BLUE_BLINKING:
+                                info->mode = LED_MODE_BLUE_BLINKING;
+                                break;
+                        case ONLP_LED_MODE_PURPLE:
+                                info->mode = LED_MODE_PURPLE;
+                                break;
+                        case ONLP_LED_MODE_PURPLE_BLINKING:
+                                info->mode = LED_MODE_PURPLE_BLINKING;
+                                break;
+                        case ONLP_LED_MODE_AUTO:
+                                info->mode = LED_MODE_AUTO;
+                                break;
+                        case ONLP_LED_MODE_AUTO_BLINKING:
+                                info->mode = LED_MODE_AUTO_BLINKING;
+                                break;
+                }
+        } else {
+                info->status = LED_STATUS_ABSENT;
+        }
 
         return 0;
 }

@@ -46,9 +46,8 @@ int main(int argc, char *argv[]) {
                 }
                 printf("Description: %s\n", led_info.desc);
                 printf("Status: %u\n", led_info.status);
+                printf("State: %u\n", led_info.state);
                 printf("Mode: %d\n", led_info.mode);
-                printf("Caps: %u\n", led_info.caps);
-                printf("Character: %c\n", led_info.character);
                 printf("\n\n");
         }
         free(led_oid_list);
