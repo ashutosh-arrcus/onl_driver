@@ -8,7 +8,7 @@ CFLAGS = -O0 -g -fPIC -I../include/
 TARGET_LIB = ../lib/libplatform_driver.so
     
 SRCS = platform_driver.c platform_fan.c platform_sys.c platform_psu.c \
-	platform_thermal.c platform_led.c
+	platform_thermal.c platform_led.c platform_sfp.c
 OBJS = $(SRCS:.c=.o)
 
 .PHONY: all

@@ -6,6 +6,7 @@
 #include <platform_sys.h>
 #include <platform_thermal.h>
 #include <platform_led.h>
+#include <platform_sfp.h>
 
 int platform_driver_init(void);
 void platform_driver_dinit(void);
