@@ -3,7 +3,7 @@ RM = rm -f
 MKDIR = mkdir -p
 RMDIR = rm -rf
 LDFLAGS = -shared -Wl,--no-as-needed -ldl -Wl,--unresolved-symbols=ignore-in-shared-libs
-CFLAGS = -O0 -g -fPIC -I../include/
+CFLAGS = -O0 -g -fPIC -I/usr/include/arrcus_onlp/onlp/ -I../include/
 
 TARGET_LIB = ../lib/libplatform_driver.so
     

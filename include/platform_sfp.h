@@ -102,6 +102,7 @@ void platform_sfp_info_init(platform_sfp_info_t *sfp_info);
 void platform_sfp_info_bulk_init(platform_sfp_info_t *sfp_info, int arr_len);
 int platform_sfp_info_bulk_get(platform_sfp_info_t *sfp_info, int arr_len);
 void platform_sfp_info_dump(platform_sfp_info_t *sfp_info);
+void platform_sfp_parse(uint8_t *data, platform_sfp_info_t *info);
 //int platform_sfp_bitmap_get();
 //int platform_sfp_presence_bitmap_get();
 

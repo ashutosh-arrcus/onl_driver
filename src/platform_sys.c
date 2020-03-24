@@ -43,7 +43,7 @@ int platform_sys_info_get(platform_sys_info_t *info) {
         strncpy(info->label_revision, sys_info.onie_info.label_revision, INFO_STR_MAX);
         strncpy(info->country_code, sys_info.onie_info.country_code, INFO_STR_MAX);
         strncpy(info->diag_version, sys_info.onie_info.diag_version, INFO_STR_MAX);
-        strncpy(info->service_tag, sys_info.onie_info.service_tag, INFO_STR_MAX);
+        //strncpy(info->service_tag, sys_info.onie_info.service_tag, INFO_STR_MAX);
         strncpy(info->onie_version, sys_info.onie_info.onie_version, INFO_STR_MAX);
         return 0;
 }

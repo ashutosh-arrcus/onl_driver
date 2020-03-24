@@ -262,10 +262,53 @@ void platform_sfp_info_dump(platform_sfp_info_t *info) {
       printf("SFP Length Desc = %s\n", info->length_desc);
     } else {
       printf("Valid(invalid) = %d\n", info->valid);
+      printf("Valid = %d\n", info->valid);
+      printf("Vendor = %s\n", info->vendor);
+      printf("Model = %s\n", info->model);
+      printf("Serial = %s\n", info->serial);
+      printf("SFP Type = %d(%s)\n", info->sfp_type, (*platformi_sff_sfp_type_name)(info->sfp_type));
+      printf("SFP Module Type = %d(%s)\n", info->sfp_module_type, (*platformi_sff_module_type_name)(info->sfp_module_type));
+      printf("SFP Media Type = %d(%s)\n", info->sfp_media_type, (*platformi_sff_media_type_name)(info->sfp_media_type));
+      printf("SFP Capability = %d(%s)\n", info->sfp_caps, (*platformi_sff_module_caps_name)(info->sfp_caps));
+      printf("SFP Length = %d\n", info->length);
+      printf("SFP Length Desc = %s\n", info->length_desc);
     }
   } else {
     printf("Status = ABSENT\n");
   }
   printf("\n\n");
+  return;
+}
+
+void platform_sfp_parse(uint8_t *data, platform_sfp_info_t *info) {
+  int ret_val = 0;
+  sff_eeprom_t rv;
+
+  ret_val = (*platformi_sff_eeprom_parse)(&rv, data);
+  if (ret_val < 0) {
+    printf("Unable to parse eeprom\n");
+    strncpy(info->vendor, rv.info.vendor, MAX_SFP_INFO_STR_LEN * sizeof(char));
+    strncpy(info->model, rv.info.model, MAX_SFP_INFO_STR_LEN * sizeof(char));
+    strncpy(info->serial, rv.info.serial, MAX_SFP_INFO_STR_LEN * sizeof(char));
+    info->sfp_type = rv.info.sfp_type;
+    info->sfp_module_type = rv.info.module_type;
+    info->sfp_media_type = rv.info.media_type;
+    info->sfp_caps = rv.info.caps;
+    info->length = rv.info.length;
+    strncpy(info->length_desc, rv.info.length_desc, MAX_SFP_INFO_STR_LEN * sizeof(char));
+  } else if (rv.identified == 1) {
+    info->valid = 1;
+    strncpy(info->vendor, rv.info.vendor, MAX_SFP_INFO_STR_LEN * sizeof(char));
+    strncpy(info->model, rv.info.model, MAX_SFP_INFO_STR_LEN * sizeof(char));
+    strncpy(info->serial, rv.info.serial, MAX_SFP_INFO_STR_LEN * sizeof(char));
+    info->sfp_type = rv.info.sfp_type;
+    info->sfp_module_type = rv.info.module_type;
+    info->sfp_media_type = rv.info.media_type;
+    info->sfp_caps = rv.info.caps;
+    info->length = rv.info.length;
+    strncpy(info->length_desc, rv.info.length_desc, MAX_SFP_INFO_STR_LEN * sizeof(char));
+  } else {
+    info->valid = 0;
+  }
   return;
 }
